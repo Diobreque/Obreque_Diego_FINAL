@@ -35,4 +35,8 @@ urlpatterns = [
     # Rutas para las Function Based Views del modelo Institucion
     path('instituciones/', views.institucion_list, name='institucion-list'),
     path('instituciones/<int:id>/', views.institucion_detalle, name='institucion-detail'),
+    path('institucion/', views.institucion_list, name='institucion_list'),
+    path('institucion/nuevo/', views.nueva_institucion, name='nueva_institucion'),
+
+
 ]

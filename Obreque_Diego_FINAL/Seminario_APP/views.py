@@ -4,6 +4,8 @@ from .models import Inscrito, Institucion
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
+from .forms import InstitucionForm
+
 
 
 from rest_framework.views import APIView
@@ -26,7 +28,9 @@ class InscritoListClass(APIView):
     def get(self, request):
         inscritos = Inscrito.objects.all()
         serializer = InscritoSerializer(inscritos, many=True)
-        return Response(serializer.data)
+        # return Response(serializer.data)
+        return render(request, 'inscrito_list.html', {'inscritos': serializer.data})
+
 
     def post(self, request):
         serializer = InscritoSerializer(data=request.data)
@@ -60,20 +64,46 @@ class InscritoDetalleClass(APIView):
         inscrito.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+
+
+
 # Function Based Views para Institucion
 @api_view(['GET', 'POST'])
 def institucion_list(request):
     if request.method == 'GET':
         instituciones = Institucion.objects.all()
         serializer = InstitucionSerializer(instituciones, many=True)
-        return Response(serializer.data)
+        return render(request, 'institucion_list.html', {'instituciones': serializer.data})
+    
+
 
     elif request.method == 'POST':
-        serializer = InstitucionSerializer(data=request.data)
+        form = InstitucionForm(request.POST)
+        if form.is_valid():
+            new_institucion = form.save()
+            serializer = InstitucionSerializer(new_institucion)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def nueva_institucion(request):
+    if request.method == 'POST':
+        serializer = InstitucionSerializer(data=request.POST)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('/institucion/')
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        form = InstitucionForm()
+        return render(request, 'nueva_institucion.html', {'form': form})
+
+
+
+
+
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def institucion_detalle(request, id):
@@ -83,8 +113,8 @@ def institucion_detalle(request, id):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        serializer = InstitucionSerializer(institucion)
-        return Response(serializer.data)
+        instituciones = Institucion.objects.all()
+        serializer = InstitucionSerializer(instituciones, many=True)
 
     elif request.method == 'PUT':
         serializer = InstitucionSerializer(institucion, data=request.data)
