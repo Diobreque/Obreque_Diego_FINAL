@@ -56,8 +56,8 @@ class InscritoListClass(APIView):
         serializer = InscritoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return redirect('inscrito_list')
-        return render(request, 'nuevo_inscrito.html', {'serializer': serializer})
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return render(request, 'nuevo_inscrito.html', {'serializer': serializer})
 
 class InscritoDetalleClass(APIView):
     def get_object(self, id):

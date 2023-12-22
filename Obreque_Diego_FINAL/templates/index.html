@@ -15,10 +15,10 @@
         <!-- Botones de Acción -->
         <div class="mb-3 text-center">
             <a href="/autor/" class="btn btn-danger me-2">Autor</a>
-            <a href="/inscritos/" class="btn btn-primary me-2">Inscritos</a>
-            <a href="/inscripcion/" class="btn btn-primary me-2">Nueva Inscripción</a>
-            <a href="/instituciones/" class="btn btn-success me-2">Instituciones</a>
-            <a href="/institucion/nuevo" class="btn btn-success">Ingresar Instituciones</a>
+            <a href="{% url 'Seminario_APP:inscrito-list' %}" class="btn btn-primary me-2">Inscritos</a>
+            <a href="{% url 'Seminario_APP:add_inscrito' %}" class="btn btn-primary me-2">Nueva Inscripción</a>
+            <a href="{% url 'Seminario_APP:institucion-list' %}" class="btn btn-success me-2">Instituciones</a>
+            <a href="{% url 'Seminario_APP:nueva_institucion' %}" class="btn btn-success">Ingresar Instituciones</a>
         </div>
 </body>
 </html>
