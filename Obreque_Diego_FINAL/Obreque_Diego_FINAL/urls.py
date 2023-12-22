@@ -18,15 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from Seminario_APP import views
 
-from django.urls import path
-from Seminario_APP import views
-
 urlpatterns = [
     # Ruta para el panel de administración de Django
     path('admin/', admin.site.urls),
 
     # Ruta para la página de inicio
     path('', views.index, name='index'),
+    path('inscripcion/', views.nuevo_inscrito, name='add_inscrito'),
 
     # Rutas para las Class Based Views del modelo Inscrito
     path('inscritos/', views.InscritoListClass.as_view(), name='inscrito-list'),
@@ -37,6 +35,7 @@ urlpatterns = [
     path('instituciones/<int:id>/', views.institucion_detalle, name='institucion-detail'),
     path('institucion/', views.institucion_list, name='institucion_list'),
     path('institucion/nuevo/', views.nueva_institucion, name='nueva_institucion'),
+
 
 
 ]

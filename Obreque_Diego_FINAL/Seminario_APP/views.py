@@ -4,17 +4,27 @@ from .models import Inscrito, Institucion
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
-from .forms import InstitucionForm
+from .forms import InscritoForm, InstitucionForm
 
 
 
 from rest_framework.views import APIView
-from django.http import Http404
+from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 
 
 
 # Create your views here.
+
+def Autor(request):
+    autor = {
+        'Nombre':'Diego Obreque Molina',
+        'Rut':'20.105.225-4',
+        'Seccion':'IEI-171-N4'
+    }
+    return JsonResponse(autor)
+
+
 
 def index(request):
     context = {
@@ -24,20 +34,30 @@ def index(request):
     return render(request, 'index.html', context)
 
 # Class Based Views para Inscrito
+def nuevo_inscrito(request):
+    if request.method == 'POST':
+        form = InscritoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('index')
+    else:
+        form = InscritoForm()
+    return render(request, 'nuevo_inscrito.html', {'form': form})
+
 class InscritoListClass(APIView):
     def get(self, request):
         inscritos = Inscrito.objects.all()
         serializer = InscritoSerializer(inscritos, many=True)
-        # return Response(serializer.data)
-        return render(request, 'inscrito_list.html', {'inscritos': serializer.data})
+        return Response(serializer.data)
+        # return render(request, 'inscrito_list.html', {'inscritos': serializer.data})
 
 
     def post(self, request):
         serializer = InscritoSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('inscrito_list')
+        return render(request, 'nuevo_inscrito.html', {'serializer': serializer})
 
 class InscritoDetalleClass(APIView):
     def get_object(self, id):
@@ -75,7 +95,8 @@ def institucion_list(request):
     if request.method == 'GET':
         instituciones = Institucion.objects.all()
         serializer = InstitucionSerializer(instituciones, many=True)
-        return render(request, 'institucion_list.html', {'instituciones': serializer.data})
+        # return render(request, 'institucion_list.html', {'instituciones': serializer.data})
+        return Response(serializer.data)
     
 
 
@@ -101,20 +122,16 @@ def nueva_institucion(request):
 
 
 
-
-
-
-
 @api_view(['GET', 'PUT', 'DELETE'])
 def institucion_detalle(request, id):
     try:
         institucion = Institucion.objects.get(pk=id)
     except Institucion.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'message': 'No existe'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        instituciones = Institucion.objects.all()
-        serializer = InstitucionSerializer(instituciones, many=True)
+        serializer = InstitucionSerializer(institucion)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
         serializer = InstitucionSerializer(institucion, data=request.data)
