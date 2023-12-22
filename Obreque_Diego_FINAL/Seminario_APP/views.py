@@ -35,18 +35,7 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-# Class Based Views para Inscrito
-# def nuevo_inscrito(request):
-#     if request.method == 'POST':
-#         form = InscritoForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('index')
-#     else:
-#         form = InscritoForm()
-#     return render(request, 'nuevo_inscrito.html', {'form': form})
-
-
+# Class Based Views Inscrito
 class InscritoCreateView(CreateView):
     model = Inscrito
     form_class = InscritoForm
@@ -100,7 +89,7 @@ class InscritoDetalleClass(APIView):
 
 
 
-# Function Based Views para Institucion
+# Function Based Views Institucion
 @api_view(['GET', 'POST'])
 def institucion_list(request):
     if request.method == 'GET':
@@ -124,7 +113,7 @@ def nueva_institucion(request):
         serializer = InstitucionSerializer(data=request.POST)
         if serializer.is_valid():
             serializer.save()
-            return redirect('/institucion/')
+            return redirect('/instituciones/')
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
