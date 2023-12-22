@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from .serializers import InscritoSerializer, InstitucionSerializer
 from .models import Inscrito, Institucion
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
 from .forms import InscritoForm, InstitucionForm
+from django.views.generic.edit import CreateView
 
 
 
@@ -28,21 +30,30 @@ def Autor(request):
 
 def index(request):
     context = {
-        'title': 'Inicio - Seminario Gastronómico',
-        'accion': 'Bienvenidos al Seminario de Gastronomía'
+        'title': 'Inicio',
+        'accion': 'Seminario de Gastronomía'
     }
     return render(request, 'index.html', context)
 
 # Class Based Views para Inscrito
-def nuevo_inscrito(request):
-    if request.method == 'POST':
-        form = InscritoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = InscritoForm()
-    return render(request, 'nuevo_inscrito.html', {'form': form})
+# def nuevo_inscrito(request):
+#     if request.method == 'POST':
+#         form = InscritoForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('index')
+#     else:
+#         form = InscritoForm()
+#     return render(request, 'nuevo_inscrito.html', {'form': form})
+
+
+class InscritoCreateView(CreateView):
+    model = Inscrito
+    form_class = InscritoForm
+    template_name = 'nuevo_inscrito.html'
+    success_url = reverse_lazy('Seminario_APP:index')
+
+
 
 class InscritoListClass(APIView):
     def get(self, request):

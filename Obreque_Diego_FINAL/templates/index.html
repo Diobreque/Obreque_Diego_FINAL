@@ -10,37 +10,16 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Seminario Gastronómico</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/inscritos/">Inscritos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/inscripcion/">Nueva Inscripción</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/instituciones/">Instituciones</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/institucion/nuevo">Ingresar Instituciones</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mt-5">
         <div class="alert alert-info display-1 text-center">{{ accion }}</div>
 
-        <!-- Contenido de la página principal -->
-        <!-- Aquí puedes agregar contenido específico de la página principal -->
-
-    </div>
+        <!-- Botones de Acción -->
+        <div class="mb-3 text-center">
+            <a href="/autor/" class="btn btn-danger me-2">Autor</a>
+            <a href="/inscritos/" class="btn btn-primary me-2">Inscritos</a>
+            <a href="/inscripcion/" class="btn btn-primary me-2">Nueva Inscripción</a>
+            <a href="/instituciones/" class="btn btn-success me-2">Instituciones</a>
+            <a href="/institucion/nuevo" class="btn btn-success">Ingresar Instituciones</a>
+        </div>
 </body>
 </html>
